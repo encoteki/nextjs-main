@@ -19,7 +19,7 @@ import { getDaoOptions } from '@/utils/supabase/dao/getDaoOptions'
 import { submitDAO } from '@/utils/supabase/dao/submitDAO'
 import { DaoType } from '@/enums/daoType'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import { useAccount, useReadContract } from 'wagmi'
+import { useAccount, useReadContract, useWriteContract } from 'wagmi'
 import { getUsedNFTId } from '@/utils/supabase/dao/getUsedNFTId'
 import contractConfig from '@/config/contract-config'
 import { Accordion, AccordionItem } from '@heroui/react'
@@ -73,6 +73,8 @@ export default function DAODetailPage({ params }: { params: Params }) {
     end_date: '',
     proposal_id: 0,
     scoring: '',
+    id: 0,
+    address: '0x0',
   })
   const [options, setOptions] = useState<OptionsResponse[]>([])
 
@@ -99,7 +101,8 @@ export default function DAODetailPage({ params }: { params: Params }) {
 
   // Get nft id of address wallet
   const { data, isSuccess } = useReadContract({
-    ...contractConfig,
+    abi: contractConfig.tsbd,
+    address: contractConfig.tsbdAddress,
     functionName: 'walletOfOwner',
     args: [address ?? '0x1c3294B823cF9ac62940c64E16bce6ebAf7dca5B'],
   })
@@ -112,6 +115,7 @@ export default function DAODetailPage({ params }: { params: Params }) {
       ])) as [DAOResponse, OptionsResponse[]]
 
       document.title = daoData.dao_name
+      console.dir(daoData)
       setDao(daoData)
       setOptions(optionsData)
     }
@@ -167,6 +171,8 @@ export default function DAODetailPage({ params }: { params: Params }) {
     setSubmitDisabled(false)
   }
 
+  const { writeContractAsync } = useWriteContract()
+
   // Submit Vote + refetch tallies + merge + animate
   const submitVote = async (isNeutralVote: boolean) => {
     let req: SubmitVoteDto
@@ -188,6 +194,16 @@ export default function DAODetailPage({ params }: { params: Params }) {
         isNeutral: false,
       }
     }
+
+    await writeContractAsync({
+      abi: contractConfig.daoImpl,
+      address: dao.address as `0x${string}`,
+      functionName: 'voteDAO',
+      args: [
+        BigInt(Number(availableNFTIds[0])),
+        isNeutralVote ? BigInt(0) : BigInt(isClickedOption),
+      ],
+    })
 
     const voted: boolean = await submitDAO(req)
     setHasVote(voted)
@@ -571,7 +587,7 @@ function BusinessDetails({
       </div>
 
       <DefaultButton
-        wording={'WIP --> DEMO PURPOSE ONLY :)'}
+        wording={'SOON'}
         isPrimary={true}
         className="p-3"
         isDisabled={true}

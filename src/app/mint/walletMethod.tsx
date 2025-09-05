@@ -12,8 +12,8 @@ import {
 } from 'wagmi'
 import { parseEther, parseGwei } from 'viem'
 import { costValue } from '@/constant/encoteki'
-import contractConfig from '@/config/contract-config'
 import { useEffect } from 'react'
+import contractConfig from '@/config/contract-config'
 
 export default function WalletMethod() {
   const {
@@ -52,9 +52,10 @@ export default function WalletMethod() {
 
       if (isSufficientFund) {
         mint({
-          ...contractConfig,
+          abi: contractConfig.tsbd,
+          address: contractConfig.tsbdAddress,
           functionName: 'mint',
-          args: [],
+          args: [BigInt(1)],
           value: parseEther(costValue.native),
         })
       }

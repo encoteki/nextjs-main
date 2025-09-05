@@ -28,7 +28,8 @@ export default function PartnerDealPage({ params }: { params: Params }) {
 
   // Get nft id of address wallet
   const { data, isSuccess } = useReadContract({
-    ...contractConfig,
+    abi: contractConfig.tsbd,
+    address: contractConfig.tsbdAddress,
     functionName: 'walletOfOwner',
     args: [address ?? '0x1c3294B823cF9ac62940c64E16bce6ebAf7dca5B'],
   })

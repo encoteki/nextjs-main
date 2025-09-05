@@ -1,14 +1,81 @@
-export const abi = [
+export const tsbd = [
   {
     inputs: [
-      { internalType: 'string', name: '_name', type: 'string' },
-      { internalType: 'string', name: '_symbol', type: 'string' },
-      { internalType: 'string', name: '_initBaseURI', type: 'string' },
-      { internalType: 'string', name: '_initNotRevealedUri', type: 'string' },
+      { internalType: 'string', name: 'name_', type: 'string' },
+      { internalType: 'string', name: 'symbol_', type: 'string' },
+      { internalType: 'string', name: 'initBaseURI_', type: 'string' },
+      { internalType: 'string', name: 'initNotRevealedUri_', type: 'string' },
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
   },
+  { inputs: [], name: 'ERC721EnumerableForbiddenBatchMint', type: 'error' },
+  {
+    inputs: [
+      { internalType: 'address', name: 'sender', type: 'address' },
+      { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
+      { internalType: 'address', name: 'owner', type: 'address' },
+    ],
+    name: 'ERC721IncorrectOwner',
+    type: 'error',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'operator', type: 'address' },
+      { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
+    ],
+    name: 'ERC721InsufficientApproval',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'approver', type: 'address' }],
+    name: 'ERC721InvalidApprover',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'operator', type: 'address' }],
+    name: 'ERC721InvalidOperator',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'owner', type: 'address' }],
+    name: 'ERC721InvalidOwner',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'receiver', type: 'address' }],
+    name: 'ERC721InvalidReceiver',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'sender', type: 'address' }],
+    name: 'ERC721InvalidSender',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'tokenId', type: 'uint256' }],
+    name: 'ERC721NonexistentToken',
+    type: 'error',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'owner', type: 'address' },
+      { internalType: 'uint256', name: 'index', type: 'uint256' },
+    ],
+    name: 'ERC721OutOfBoundsIndex',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'owner', type: 'address' }],
+    name: 'OwnableInvalidOwner',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
+    name: 'OwnableUnauthorizedAccount',
+    type: 'error',
+  },
+  { inputs: [], name: 'ReentrancyGuardReentrantCall', type: 'error' },
   {
     anonymous: false,
     inputs: [
@@ -138,7 +205,7 @@ export const abi = [
   },
   {
     inputs: [],
-    name: 'maxMintAmount',
+    name: 'maxMintPerTx',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
@@ -151,15 +218,8 @@ export const abi = [
     type: 'function',
   },
   {
-    inputs: [],
+    inputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
     name: 'mint',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'uint256', name: '_mintAmount', type: 'uint256' }],
-    name: 'mintByAmount',
     outputs: [],
     stateMutability: 'payable',
     type: 'function',
@@ -173,7 +233,7 @@ export const abi = [
   },
   {
     inputs: [],
-    name: 'notRevealedUri',
+    name: 'notRevealedURI',
     outputs: [{ internalType: 'string', name: '', type: 'string' }],
     stateMutability: 'view',
     type: 'function',
@@ -189,20 +249,6 @@ export const abi = [
     inputs: [{ internalType: 'uint256', name: 'tokenId', type: 'uint256' }],
     name: 'ownerOf',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'bool', name: '_state', type: 'bool' }],
-    name: 'pause',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'paused',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -236,7 +282,7 @@ export const abi = [
       { internalType: 'address', name: 'from', type: 'address' },
       { internalType: 'address', name: 'to', type: 'address' },
       { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
-      { internalType: 'bytes', name: '_data', type: 'bytes' },
+      { internalType: 'bytes', name: 'data', type: 'bytes' },
     ],
     name: 'safeTransferFrom',
     outputs: [],
@@ -254,49 +300,43 @@ export const abi = [
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'string', name: '_newBaseExtension', type: 'string' },
-    ],
+    inputs: [{ internalType: 'string', name: 'ext', type: 'string' }],
     name: 'setBaseExtension',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'string', name: '_newBaseURI', type: 'string' }],
+    inputs: [{ internalType: 'string', name: 'newBaseURI', type: 'string' }],
     name: 'setBaseURI',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'uint256', name: '_newCost', type: 'uint256' }],
+    inputs: [{ internalType: 'uint256', name: 'newCost', type: 'uint256' }],
     name: 'setCost',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'string', name: '_notRevealedURI', type: 'string' },
-    ],
+    inputs: [{ internalType: 'uint256', name: 'newMax', type: 'uint256' }],
+    name: 'setMaxMintPerTx',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'string', name: 'uri', type: 'string' }],
     name: 'setNotRevealedURI',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'bool', name: '_state', type: 'bool' }],
+    inputs: [{ internalType: 'bool', name: 'state', type: 'bool' }],
     name: 'setRevealed',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'uint256', name: '_newmaxMintAmount', type: 'uint256' },
-    ],
-    name: 'setmaxMintAmount',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -365,7 +405,7 @@ export const abi = [
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: '_owner', type: 'address' }],
+    inputs: [{ internalType: 'address', name: 'owner_', type: 'address' }],
     name: 'walletOfOwner',
     outputs: [{ internalType: 'uint256[]', name: '', type: 'uint256[]' }],
     stateMutability: 'view',
@@ -375,7 +415,7 @@ export const abi = [
     inputs: [],
     name: 'withdraw',
     outputs: [],
-    stateMutability: 'payable',
+    stateMutability: 'nonpayable',
     type: 'function',
   },
 ] as const

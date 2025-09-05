@@ -1,3 +1,5 @@
+import { HexString } from './hexString'
+
 export interface DAOResponse {
   dao_id: number
   dao_name: string
@@ -7,6 +9,8 @@ export interface DAOResponse {
   end_date: string
   proposal_id: number
   scoring: string
+  id: number
+  address: HexString
 }
 
 export interface OptionsResponse {
