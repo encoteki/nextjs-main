@@ -30,11 +30,8 @@ export default async function Family() {
                   priority
                   width={80}
                   height={80}
+                  unoptimized
                   className="h-16 w-auto object-contain"
-                  sizes="(max-width: 640px) 33vw,
-                 (max-width: 768px) 25vw,
-                 (max-width: 1024px) 20vw,
-                 12.5vw"
                 />
               </a>
             </li>
